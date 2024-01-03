@@ -1,9 +1,7 @@
-//! Mock digital [`InputPin`] and [`OutputPin`] v2 implementations
-//! Also mock calls to [`Wait`], assuming the `embedded-hal-async` feature is enabled.
+//! Mock digital [`InputPin`] and [`OutputPin`] implementations
 //!
-//! [`InputPin`]: https://docs.rs/embedded-hal/1.0.0-alpha.6/embedded_hal/digital/trait.InputPin.html
-//! [`OutputPin`]: https://docs.rs/embedded-hal/1.0.0-alpha.6/embedded_hal/digital/trait.OutputPin.html
-//! [`Wait`]: https://docs.rs/embedded-hal-async/0.2.0-alpha.1/embedded_hal_async/digital/trait.Wait.html
+//! [`InputPin`]: https://docs.rs/embedded-hal/1.0.0-rc.3/embedded_hal/digital/trait.InputPin.html
+//! [`OutputPin`]: https://docs.rs/embedded-hal/1.0.0-rc.3/embedded_hal/digital/trait.OutputPin.html
 //!
 //! ```
 //! # use eh1 as embedded_hal;
@@ -36,7 +34,7 @@
 //! pin.done();
 //!
 //! // Update expectations
-//! pin.expect(&[]);
+//! pin.update_expectations(&[]);
 //! // ...
 //! pin.done();
 //!
@@ -197,7 +195,7 @@ impl OutputPin for Mock {
 
 impl InputPin for Mock {
     /// Is the input pin high?
-    fn is_high(&self) -> Result<bool, Self::Error> {
+    fn is_high(&mut self) -> Result<bool, Self::Error> {
         let mut s = self.clone();
 
         let Transaction { kind, err } = s.next().expect("no expectation for pin::is_high call");
@@ -214,7 +212,7 @@ impl InputPin for Mock {
     }
 
     /// Is the input pin low?
-    fn is_low(&self) -> Result<bool, Self::Error> {
+    fn is_low(&mut self) -> Result<bool, Self::Error> {
         let mut s = self.clone();
 
         let Transaction { kind, err } = s.next().expect("no expectation for pin::is_low call");

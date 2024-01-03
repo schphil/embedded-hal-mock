@@ -8,7 +8,8 @@
 //! ## Usage
 //!
 //! ```
-//! use eh1::spi::SpiBus;
+//! # use eh1 as embedded_hal;
+//! use embedded_hal::spi::SpiBus;
 //! use embedded_hal_mock::eh1::spi::{Mock as SpiMock, Transaction as SpiTransaction};
 //! use embedded_hal_nb::spi::FullDuplex;
 //!
@@ -40,10 +41,15 @@
 //! // Finalise expectations
 //! spi.done();
 //! ```
+<<<<<<< HEAD
 use eh1::spi;
 use eh1::spi::{Operation, SpiBus, SpiDevice};
 use embedded_hal_nb::nb;
 use embedded_hal_nb::spi::FullDuplex;
+=======
+use eh1::spi::{self, Operation, SpiBus, SpiDevice};
+use embedded_hal_nb::{nb, spi::FullDuplex};
+>>>>>>> v0.10.0-rc.4
 
 use crate::common::Generic;
 
@@ -376,7 +382,11 @@ impl SpiDevice for Mock {
                 Operation::TransferInPlace(buffer) => {
                     SpiBus::transfer_in_place(self, buffer)?;
                 }
+<<<<<<< HEAD
                 Operation::DelayUs(delay) => {
+=======
+                Operation::DelayNs(delay) => {
+>>>>>>> v0.10.0-rc.4
                     let w = self.next().expect("no expectation for spi::delay call");
                     assert_eq!(
                         w.expected_mode,
@@ -428,7 +438,11 @@ impl embedded_hal_async::spi::SpiDevice<u8> for Mock {
                 Operation::TransferInPlace(buffer) => {
                     SpiBus::transfer_in_place(self, buffer)?;
                 }
+<<<<<<< HEAD
                 Operation::DelayUs(delay) => {
+=======
+                Operation::DelayNs(delay) => {
+>>>>>>> v0.10.0-rc.4
                     let w = self.next().expect("no expectation for spi::delay call");
                     assert_eq!(
                         w.expected_mode,
@@ -589,7 +603,11 @@ mod test {
         spi.transaction(&mut [
             Operation::Write(&[1, 2]),
             Operation::Write(&[0x09]),
+<<<<<<< HEAD
             Operation::DelayUs(100),
+=======
+            Operation::DelayNs(100),
+>>>>>>> v0.10.0-rc.4
             Operation::Read(&mut ans),
         ])
         .unwrap();
@@ -611,7 +629,11 @@ mod test {
             &mut [
                 Operation::Write(&[1, 2]),
                 Operation::Write(&[0x09]),
+<<<<<<< HEAD
                 Operation::DelayUs(100),
+=======
+                Operation::DelayNs(100),
+>>>>>>> v0.10.0-rc.4
                 Operation::Read(&mut ans),
             ],
         )
