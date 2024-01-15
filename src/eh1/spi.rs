@@ -450,7 +450,7 @@ where
                 Operation::TransferInPlace(buffer) => {
                     SpiBus::transfer_in_place(self, buffer)?;
                 }
-                Operation::DelayUs(delay) => {
+                Operation::DelayNs(delay) => {
                     let w = self.next().expect("no expectation for spi::delay call");
                     assert_eq!(
                         w.expected_mode,
