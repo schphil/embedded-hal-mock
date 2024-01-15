@@ -1,15 +1,17 @@
 //! Mock digital [`InputPin`] and [`OutputPin`] implementations
 //!
-//! [`InputPin`]: https://docs.rs/embedded-hal/1.0.0-rc.3/embedded_hal/digital/trait.InputPin.html
-//! [`OutputPin`]: https://docs.rs/embedded-hal/1.0.0-rc.3/embedded_hal/digital/trait.OutputPin.html
+//! [`InputPin`]: https://docs.rs/embedded-hal/1/embedded_hal/digital/trait.InputPin.html
+//! [`OutputPin`]: https://docs.rs/embedded-hal/1/embedded_hal/digital/trait.OutputPin.html
 //!
 //! ```
 //! # use eh1 as embedded_hal;
 //! use std::io::ErrorKind;
 //!
-//! use embedded_hal_mock::eh1::MockError;
-//! use embedded_hal_mock::eh1::pin::{Transaction as PinTransaction, Mock as PinMock, State as PinState};
 //! use embedded_hal::digital::{InputPin, OutputPin};
+//! use embedded_hal_mock::eh1::{
+//!     pin::{Mock as PinMock, State as PinState, Transaction as PinTransaction},
+//!     MockError,
+//! };
 //!
 //! let err = MockError::Io(ErrorKind::NotConnected);
 //!
@@ -37,14 +39,12 @@
 //! pin.update_expectations(&[]);
 //! // ...
 //! pin.done();
-//!
 //! ```
 
-use crate::common::Generic;
-use crate::eh1::error::MockError;
 use eh1 as embedded_hal;
-
 use embedded_hal::digital::{ErrorType, InputPin, OutputPin};
+
+use crate::{common::Generic, eh1::error::MockError};
 
 /// MockPin transaction
 #[derive(PartialEq, Eq, Clone, Debug)]
@@ -333,14 +333,16 @@ impl embedded_hal_async::digital::Wait for Mock {
 
 #[cfg(test)]
 mod test {
-    use super::super::error::MockError;
-    use super::TransactionKind::{Get, Set};
-    use super::*;
-
     use std::io::ErrorKind;
 
     use eh1 as embedded_hal;
     use embedded_hal::digital::{InputPin, OutputPin};
+
+    use super::{
+        super::error::MockError,
+        TransactionKind::{Get, Set},
+        *,
+    };
 
     #[test]
     fn test_input_pin() {

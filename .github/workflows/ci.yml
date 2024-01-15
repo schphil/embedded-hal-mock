@@ -1,9 +1,8 @@
 on:
-  # trigger on pushes to the main branch and 1-alpha
+  # trigger on pushes to the main branch
   push:
     branches:
       - main
-      - 1-alpha
   # trigger on all pull requests
   pull_request:
   # enable manual triggering
@@ -20,7 +19,7 @@ jobs:
       matrix:
         toolchain:
           - "1.63"
-          - "nightly"
+          - "1.75"
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
@@ -37,14 +36,14 @@ jobs:
       - name: Build
         run: cargo build
       - name: Build (all features)
-        if: ${{ matrix.toolchain == 'nightly' }}
+        if: ${{ matrix.toolchain == '1.75' }}
         run: cargo build --all-features
 
       # Test main crate
       - name: Test
         run: cargo test
       - name: Test (all features)
-        if: ${{ matrix.toolchain == 'nightly' }}
+        if: ${{ matrix.toolchain == '1.75' }}
         run: cargo test --all-features
 
   # Check code formatting
@@ -53,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@nightly
         with:
           components: rustfmt
-      - run: cargo fmt --all -- --check
+      - run: cargo +nightly fmt --all -- --check
